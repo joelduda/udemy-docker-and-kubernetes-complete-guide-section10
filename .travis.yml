@@ -1,0 +1,23 @@
+sudo: required
+language: generic
+services:
+  - docker
+
+before_install:
+  - docker build -t joelduda/section10-react-test -f ./client/Dockerfile.dev ./client
+
+script:
+  - docker run -e CI=true joelduda/section10-react-test npm test
+
+after_success:
+  - docker build -t joelduda/section10-client -f ./client/Dockerfile ./client
+  - docker build -t joelduda/section10-server -f ./server/Dockerfile ./server
+  - docker build -t joelduda/section10-worker -f ./worker/Dockerfile ./worker
+  - docker build -t joelduda/section10-nginx -f ./nginx/Dockerfile ./nginx
+  # login to the docker CLI - using travisci secrets
+  - ECHO "$docker_hub_password" | docker login -u "$docker_hub_id" --password-stdin
+  # take those images and push them to docker hub
+  - docker push joelduda/section10-client
+  - docker push joelduda/section10-server
+  - docker push joelduda/section10-worker
+  - docker push joelduda/section10-nginx
