@@ -15,7 +15,7 @@ after_success:
   - docker build -t joelduda/section10-worker -f ./worker/Dockerfile ./worker
   - docker build -t joelduda/section10-nginx -f ./nginx/Dockerfile ./nginx
   # login to the docker CLI - using travisci secrets
-  - ECHO "$docker_hub_password" | docker login -u "$docker_hub_id" --password-stdin
+  - echo "$docker_hub_password" | docker login -u "$docker_hub_id" --password-stdin
   # take those images and push them to docker hub
   - docker push joelduda/section10-client
   - docker push joelduda/section10-server
