@@ -21,3 +21,15 @@ after_success:
   - docker push joelduda/section10-server
   - docker push joelduda/section10-worker
   - docker push joelduda/section10-nginx
+
+deploy:
+  provider: elasticbeanstalk
+  region: 'ca-central-1'
+  app: 'section10'
+  env: 'Section10-env'
+  bucket_name: "elasticbeanstalk-ca-central-1-730208295227"
+  bucket_path: 'section10'
+  on:
+    branch: main
+  access_key_id: $access_key_id
+  secret_access_key: $secret_access_key
